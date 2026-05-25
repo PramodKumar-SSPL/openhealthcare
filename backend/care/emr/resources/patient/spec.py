@@ -68,6 +68,7 @@ class PatientBaseSpec(EMRResource):
     pincode: int | None = None
     deceased_datetime: StrictTZAwareDateTime | None = None
     blood_group: BloodGroupChoices | None = None
+    nationality: str | None = None
 
     @field_validator("deceased_datetime")
     @classmethod
@@ -162,6 +163,7 @@ class PatientUpdateSpec(ExtensionValidator, PatientBaseSpec):
     permanent_address: str | None = None
     pincode: int | None = None
     blood_group: BloodGroupChoices | None = None
+    nationality: str | None = None
     date_of_birth: datetime.date | None = None
     age: int | None = None
     geo_organization: UUID4 | None = None

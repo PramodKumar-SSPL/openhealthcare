@@ -34,6 +34,11 @@ class Patient(EMRBaseModel):
     deceased_datetime = models.DateTimeField(default=None, null=True, blank=True)
 
     blood_group = models.CharField(max_length=16)
+    nationality = models.CharField(
+        max_length=100,
+        blank=True,
+        default="",
+    )
 
     geo_organization = models.ForeignKey(
         "emr.Organization", on_delete=models.SET_NULL, null=True, blank=True

@@ -80,7 +80,8 @@ class TestPatientViewSet(CareAPITestBase):
         user = self.create_user()
         geo_organization = self.create_organization(org_type="govt")
         patient_data = self.generate_patient_data(
-            geo_organization=geo_organization.external_id
+            geo_organization=geo_organization.external_id,
+            nationality="Indian",
         )
         organization = self.create_organization(org_type="govt")
         role = self.create_role_with_permissions(
@@ -91,6 +92,7 @@ class TestPatientViewSet(CareAPITestBase):
         PatientCreateLock().release()
         response = self.client.post(self.base_url, patient_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["nationality"], "Indian")
 
     def test_create_patient_unauthorization(self):
         """Test patient creation with proper authorization"""
@@ -150,6 +152,7 @@ class TestPatientViewSet(CareAPITestBase):
             response = self.client.post(self.base_url, patient_data, format="json")
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+
     def test_update_patient_age_and_date_of_birth(self):
         user = self.create_user()
         geo_organization = self.create_organization(org_type="govt")
@@ -169,6 +172,7 @@ class TestPatientViewSet(CareAPITestBase):
         PatientCreateLock().release()
         response = self.client.post(self.base_url, patient_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["nationality"], "Indian")
         self.assertEqual(response.data["date_of_birth"], "1993-01-10")
         self.assertEqual(response.data["year_of_birth"], 1993)
         patient_id = response.data["id"]
@@ -176,6 +180,7 @@ class TestPatientViewSet(CareAPITestBase):
         patient_data["age"] = 33
         response = self.client.put(reverse_url, patient_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["nationality"], "Indian")
         self.assertEqual(response.data["date_of_birth"], None)
         self.assertEqual(
             response.data["year_of_birth"],
@@ -185,6 +190,7 @@ class TestPatientViewSet(CareAPITestBase):
         del patient_data["age"]
         response = self.client.put(reverse_url, patient_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["nationality"], "Indian")
         self.assertEqual(response.data["date_of_birth"], "1992-01-10")
         self.assertEqual(response.data["year_of_birth"], 1992)
 
